@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -20,6 +21,7 @@ public class User {
     @GenericGenerator(name = "increment", strategy = "increment")
     private Long id;
 
+    @NaturalId
     @Column(name = "login")
     private String login;
 
