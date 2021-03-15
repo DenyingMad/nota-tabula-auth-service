@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class UserPrinciple implements UserDetails {
+public class UserPrincipal implements UserDetails {
     private final String email;
 
     @JsonIgnore
@@ -20,11 +20,11 @@ public class UserPrinciple implements UserDetails {
 
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public static UserPrinciple build(User user) {
+    public static UserPrincipal build(User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream().map(role ->
                 new SimpleGrantedAuthority(role.getName().name())
         ).collect(Collectors.toList());
-        return new UserPrinciple(
+        return new UserPrincipal(
                 user.getEmail(),
                 user.getPassword(),
                 authorities

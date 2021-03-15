@@ -1,12 +1,16 @@
 package com.devilpanda.nota_tabula.security.jwt;
 
-import com.devilpanda.nota_tabula.security.UserPrinciple;
+import com.devilpanda.nota_tabula.security.UserPrincipal;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
 
@@ -19,10 +23,12 @@ public class JwtProvider {
     private static final String JWT_SIGN_SECRET = random(32, true, true);
 
     public String generateToken(Authentication login) {
-        UserPrinciple userPrinciple = (UserPrinciple) login.getPrincipal();
+        UserPrincipal userPrincipal = (UserPrincipal) login.getPrincipal();
         return Jwts.builder()
-                .setSubject(userPrinciple.getUsername())
+                .setSubject(userPrincipal.getUsername())
+                .setIssuedAt(Date.from(Instant.now()))
                 .setExpiration(Date.from(Instant.now().plus(15, DAYS)))
+                .claim("currentUser", toJsonString(userPrincipal))
                 .signWith(SignatureAlgorithm.HS512, JWT_SIGN_SECRET)
                 .compact();
     }
@@ -50,5 +56,14 @@ public class JwtProvider {
             LOGGER.warn("Illegal argument for Jwt Token -> Message: {}", e.getMessage());
         }
         return false;
+    }
+
+    private String toJsonString(Serializable object) {
+        ObjectWriter writer = new ObjectMapper().writer();
+        try {
+            return writer.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException(String.format("Could not transform object '%s' to JSON: ", object), e);
+        }
     }
 }
