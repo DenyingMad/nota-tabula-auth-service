@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/nota_tabula_db
+    username: sa
+    password: password
+  jpa:
+    show-sql: true
