@@ -6,17 +6,10 @@
         <artifactId>parent</artifactId>
         <groupId>com.devilpanda</groupId>
         <version>1.0</version>
-        <relativePath>../parent/pom.xml</relativePath>
+        <relativePath>../../parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>app</artifactId>
-    <packaging>pom</packaging>
-    <name>Auth Service - App</name>
-
-    <modules>
-        <module>app-api</module>
-        <module>app-impl</module>
-    </modules>
-
+    <artifactId>adapter-rest</artifactId>
+    <name>Auth Service - Adapter Rest</name>
 </project>

@@ -8,11 +8,10 @@
         <version>1.0</version>
         <relativePath>parent/pom.xml</relativePath>
     </parent>
-
-    <artifactId>nota_tabula</artifactId>
     <packaging>pom</packaging>
-    <name>Nota Tabula</name>
-    <description>Task Manager</description>
+
+    <artifactId>auth_service</artifactId>
+    <name>Nota Tabula - Auth Service</name>
 
     <modules>
         <module>domain</module>
@@ -21,5 +20,4 @@
         <module>fw</module>
         <module>parent</module>
     </modules>
-
 </project>

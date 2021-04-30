@@ -11,13 +11,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>app-api</artifactId>
-    <name>Nota Tabula - App - Api</name>
+    <name>Auth Service - App Api</name>
 
     <dependencies>
         <dependency>
-            <groupId>com.devilpanda</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>domain</artifactId>
         </dependency>
     </dependencies>
-
 </project>

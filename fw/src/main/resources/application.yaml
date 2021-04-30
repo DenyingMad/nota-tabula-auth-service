@@ -1,7 +1,20 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/nota_tabula_db
-    username: sa
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://nota-tabula.ctezjyhwnobs.eu-central-1.rds.amazonaws.com:5432/security
+    username: postgres
     password: password
   jpa:
     show-sql: true
+  application:
+    name: auth-service
+
+server:
+  port: 8083
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true

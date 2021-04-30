@@ -1,5 +1,10 @@
+FROM adoptopenjdk/openjdk11:alpine as builder
+RUN apk add --no-cache maven
+ADD . /src
+WORKDIR /src
+RUN mvn package -Dmaven.test.skip=true
+
 FROM adoptopenjdk/openjdk11:alpine-jre
-EXPOSE 8080
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-CMD java -jar app.jar
+COPY --from=builder /src/fw/target/*.jar app.jar
+EXPOSE 8083
+ENTRYPOINT ["java", "-jar", "/app.jar"]

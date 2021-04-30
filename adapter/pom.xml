@@ -12,11 +12,10 @@
 
     <artifactId>adapter</artifactId>
     <packaging>pom</packaging>
-    <name>Nota Tabula - Adapter</name>
+    <name>Auth Service - Adapter</name>
 
     <modules>
         <module>adapter-jpa</module>
-        <module>adapter-rest-service</module>
+        <module>adapter-rest</module>
     </modules>
-
 </project>
