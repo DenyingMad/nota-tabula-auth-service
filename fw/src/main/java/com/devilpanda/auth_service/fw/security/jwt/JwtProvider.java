@@ -15,12 +15,11 @@ import java.time.Instant;
 import java.util.Date;
 
 import static java.time.temporal.ChronoUnit.DAYS;
-import static org.apache.commons.lang3.RandomStringUtils.random;
 
 @Component
 public class JwtProvider {
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtProvider.class);
-    private static final String JWT_SIGN_SECRET = random(32, true, true);
+    private static final String JWT_SIGN_SECRET = "STUB_SECRET";
 
     public String generateToken(Authentication login) {
         UserPrincipal userPrincipal = (UserPrincipal) login.getPrincipal();
