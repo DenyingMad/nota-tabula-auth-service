@@ -1,16 +1,11 @@
-package com.devilpanda.auth_service.fw.security;
+package com.devilpanda.auth_service.adapter.rest;
 
-import com.devilpanda.auth_service.app.api.IncorrectEmailException;
-import com.devilpanda.auth_service.app.api.UserAlreadyExistException;
+import com.devilpanda.auth_service.adapter.rest.dto.LoginFormDto;
+import com.devilpanda.auth_service.adapter.rest.dto.RegisterFormDto;
+import com.devilpanda.auth_service.app.api.JwtService;
 import com.devilpanda.auth_service.app.api.UserService;
 import com.devilpanda.auth_service.domain.User;
-import com.devilpanda.auth_service.fw.security.dto.LoginFormDto;
-import com.devilpanda.auth_service.fw.security.dto.RegisterFormDto;
-import com.devilpanda.auth_service.fw.security.jwt.JwtProvider;
-import com.devilpanda.auth_service.fw.security.jwt.JwtResponse;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,26 +18,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/rest/security")
 @RequiredArgsConstructor
 public class SecurityController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityController.class);
-    private final AuthenticationManager authenticationManager;
-    private final JwtProvider jwtProvider;
+    private final JwtService jwtService;
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
     public ResponseEntity<JwtResponse> registerUser(@RequestBody RegisterFormDto registerFormDto) {
-        User user = new User();
-        user.setLogin(registerFormDto.getLogin());
-        user.setEmail(registerFormDto.getEmail());
-        user.setPassword(registerFormDto.getPassword());
+        User user = new User(
+                registerFormDto.getLogin(),
+                registerFormDto.getEmail(),
+                registerFormDto.getPassword(),
+                registerFormDto.getIsSubscribed()
+        );
 
-        try {
-            userService.saveUser(user);
-            return authenticateUser(mapRegisterFormToLoginForm(registerFormDto));
-        } catch (UserAlreadyExistException | IncorrectEmailException e) {
-            String warnMessage = String.format("Can't register new user -> Message: %s", e.getMessage());
-            LOGGER.warn(warnMessage);
-            return ResponseEntity.status(418).body(null);
-        }
+        userService.saveUser(user);
+        return authenticateUser(mapRegisterFormToLoginForm(registerFormDto));
     }
 
     @PostMapping("/login")
@@ -52,7 +42,7 @@ public class SecurityController {
         Authentication auth = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        String jwtToken = jwtProvider.generateToken(auth);
+        String jwtToken = jwtService.generateToken(auth);
 
         return ResponseEntity.ok(new JwtResponse(jwtToken));
     }

@@ -1,7 +1,7 @@
-package com.devilpanda.auth_service.fw.security.jwt;
+package com.devilpanda.auth_service.app.impl;
 
-import com.devilpanda.auth_service.fw.security.UserDetailService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.devilpanda.auth_service.app.api.JwtService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,24 +16,21 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class JwtFilter extends GenericFilterBean {
-
-    private static final String AUTHORIZATION = "Authorization";
-
-    @Autowired
-    private JwtProvider jwtProvider;
-    @Autowired
-    private UserDetailService userDetailService;
+    private final JwtProvider jwtProvider;
+    private final UserDetailService userService;
+    private final JwtService jwtService;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         try {
-            String token = getJwtToken((HttpServletRequest) servletRequest);
+            String token = jwtService.getJwtToken((HttpServletRequest) servletRequest);
             logger.info("Filter working... token: " + token);
 
             if (token != null && jwtProvider.validateToken(token)) {
                 String userName = jwtProvider.getUserNameFromToken(token);
-                UserDetails userDetails = userDetailService.loadUserByUsername(userName);
+                UserDetails userDetails = userService.loadUserByUsername(userName);
                 UsernamePasswordAuthenticationToken auth
                         = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
@@ -42,12 +39,5 @@ public class JwtFilter extends GenericFilterBean {
             logger.error("Can't set user auth", e);
         }
         filterChain.doFilter(servletRequest, servletResponse);
-    }
-
-    private String getJwtToken(HttpServletRequest request) {
-        String authHeader = request.getHeader(AUTHORIZATION);
-        if (authHeader != null && authHeader.startsWith("Bearer"))
-            return authHeader.replace("Bearer ", "");
-        return null;
     }
 }

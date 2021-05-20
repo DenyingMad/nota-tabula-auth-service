@@ -12,16 +12,7 @@ public interface UserService {
      * @param login - логин пользователя
      * @return - найденный пользователь
      */
-    Optional<User> findUserByLogin(String login);
-
-    /**
-     * Находит пользователя по емейлу
-     *
-     * @param email - почта пользователя
-     * @return - найденный пользователь
-     */
-    Optional<User> findUserByEmail(String email);
-
+    User findUserByLogin(String login);
 
     /**
      * Находит пользователя по логину и хэшированному паролю
@@ -36,7 +27,6 @@ public interface UserService {
      * Сохранение пользователя
      *
      * @param user - пользователь, которого нужно сохранить
-     * @return - сохраненный пользователь
      */
-    User saveUser(User user);
+    void saveUser(User user);
 }

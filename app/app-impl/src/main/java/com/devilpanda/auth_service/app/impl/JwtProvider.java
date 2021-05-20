@@ -1,6 +1,7 @@
-package com.devilpanda.auth_service.fw.security.jwt;
+package com.devilpanda.auth_service.app.impl;
 
-import com.devilpanda.auth_service.fw.security.UserPrincipal;
+import com.devilpanda.auth_service.app.api.JwtService;
+import com.devilpanda.auth_service.domain.UserPrincipal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
@@ -17,10 +19,20 @@ import java.util.Date;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Component
-public class JwtProvider {
+public class JwtProvider implements JwtService {
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtProvider.class);
     private static final String JWT_SIGN_SECRET = "STUB_SECRET";
+    private static final String AUTHORIZATION = "Authorization";
 
+    @Override
+    public String getJwtToken(HttpServletRequest request) {
+        String authHeader = request.getHeader(AUTHORIZATION);
+        if (authHeader != null && authHeader.startsWith("Bearer"))
+            return authHeader.replace("Bearer ", "");
+        return null;
+    }
+
+    @Override
     public String generateToken(Authentication login) {
         UserPrincipal userPrincipal = (UserPrincipal) login.getPrincipal();
         return Jwts.builder()
@@ -32,6 +44,7 @@ public class JwtProvider {
                 .compact();
     }
 
+    @Override
     public String getUserNameFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(JWT_SIGN_SECRET)
@@ -39,6 +52,7 @@ public class JwtProvider {
                 .getBody().getSubject();
     }
 
+    @Override
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(JWT_SIGN_SECRET).parseClaimsJws(token);

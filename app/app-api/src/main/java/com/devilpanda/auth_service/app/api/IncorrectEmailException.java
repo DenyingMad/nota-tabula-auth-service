@@ -1,19 +1,9 @@
 package com.devilpanda.auth_service.app.api;
 
 public class IncorrectEmailException extends RuntimeException {
-    public IncorrectEmailException() {
-        super();
-    }
+    private static final String MESSAGE = "Email %s is not in the correct format";
 
-    public IncorrectEmailException(String message) {
-        super(message);
-    }
-
-    public IncorrectEmailException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public IncorrectEmailException(Throwable cause) {
-        super(cause);
+    public IncorrectEmailException(String email) {
+        super(String.format(MESSAGE, email));
     }
 }

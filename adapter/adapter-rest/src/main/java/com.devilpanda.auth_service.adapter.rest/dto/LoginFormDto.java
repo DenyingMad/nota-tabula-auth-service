@@ -1,4 +1,4 @@
-package com.devilpanda.auth_service.fw.security.dto;
+package com.devilpanda.auth_service.adapter.rest.dto;
 
 import lombok.Data;
 

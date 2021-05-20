@@ -15,7 +15,7 @@
     <name>Auth Service - Adapter</name>
 
     <modules>
-        <module>adapter-jpa</module>
         <module>adapter-rest</module>
+        <module>adapter-user</module>
     </modules>
 </project>

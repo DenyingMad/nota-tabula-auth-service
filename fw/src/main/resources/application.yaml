@@ -1,11 +1,4 @@
 spring:
-  datasource:
-    driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://nota-tabula.ctezjyhwnobs.eu-central-1.rds.amazonaws.com:5432/security
-    username: postgres
-    password: password
-  jpa:
-    show-sql: true
   application:
     name: auth-service
 
@@ -18,3 +11,9 @@ eureka:
       defaultZone: http://localhost:8761/eureka
   instance:
     prefer-ip-address: true
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: headers

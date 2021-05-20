@@ -26,22 +26,27 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>app-api</artifactId>
-                <version>1.0</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>app-impl</artifactId>
-                <version>1.0</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>domain</artifactId>
-                <version>1.0</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>adapter-jpa</artifactId>
-                <version>1.0</version>
+                <artifactId>adapter-rest</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>adapter-user</artifactId>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
@@ -55,22 +60,17 @@
                 <version>1.18.18</version>
                 <optional>true</optional>
             </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.12.0</version>
-            </dependency>
 
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>2.4.4</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-test</artifactId>
                 <version>5.4.5</version>
                 <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>2.4.3</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -86,6 +86,11 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+                <version>3.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
                 <version>3.0.2</version>
             </dependency>
 

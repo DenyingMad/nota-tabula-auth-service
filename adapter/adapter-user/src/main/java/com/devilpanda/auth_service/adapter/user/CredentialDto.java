@@ -1,17 +1,14 @@
-package com.devilpanda.auth_service.domain;
+package com.devilpanda.auth_service.adapter.user;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class CredentialDto {
     private String login;
     private String email;
     private String password;
-    private Boolean isSubscribed;
 }

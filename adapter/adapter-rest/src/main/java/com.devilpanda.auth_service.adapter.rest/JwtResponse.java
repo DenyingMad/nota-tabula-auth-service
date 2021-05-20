@@ -1,4 +1,4 @@
-package com.devilpanda.auth_service.fw.security.jwt;
+package com.devilpanda.auth_service.adapter.rest;
 
 import lombok.Getter;
 import lombok.Setter;
