@@ -6,15 +6,12 @@ import com.devilpanda.auth_service.app.api.UserService;
 import com.devilpanda.auth_service.app.api.WrongCredentialsException;
 import com.devilpanda.auth_service.domain.User;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceAdapter implements UserService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceAdapter.class);
     private final PasswordEncoder passwordEncoder;
     private final UserFeignClient userFeignClient;
 
@@ -43,7 +40,6 @@ public class UserServiceAdapter implements UserService {
             throw new IncorrectEmailException(user.getEmail());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        LOGGER.debug("Sending user creation request");
         userFeignClient.createUser(user);
     }
 
