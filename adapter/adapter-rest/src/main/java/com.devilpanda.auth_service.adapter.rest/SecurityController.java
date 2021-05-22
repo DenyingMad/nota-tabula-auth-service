@@ -6,11 +6,8 @@ import com.devilpanda.auth_service.app.api.JwtService;
 import com.devilpanda.auth_service.app.api.UserService;
 import com.devilpanda.auth_service.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -20,10 +17,9 @@ import org.springframework.web.bind.annotation.*;
 public class SecurityController {
     private final JwtService jwtService;
     private final UserService userService;
-    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public ResponseEntity<JwtResponse> registerUser(@RequestBody RegisterFormDto registerFormDto) {
+    public ResponseEntity<Object> registerUser(@RequestBody RegisterFormDto registerFormDto) {
         User user = new User(
                 registerFormDto.getLogin(),
                 registerFormDto.getEmail(),
@@ -32,25 +28,15 @@ public class SecurityController {
         );
 
         userService.saveUser(user);
-        return authenticateUser(mapRegisterFormToLoginForm(registerFormDto));
+        return ResponseEntity.ok("Successful registration");
     }
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> authenticateUser(@RequestBody LoginFormDto loginFormDto) {
-        UsernamePasswordAuthenticationToken authToken
-                = new UsernamePasswordAuthenticationToken(loginFormDto.getEmail(), loginFormDto.getPassword());
-        Authentication auth = authenticationManager.authenticate(authToken);
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        User user = userService.authorizeUser(loginFormDto.getEmail(), loginFormDto.getPassword());
 
-        String jwtToken = jwtService.generateToken(auth);
+        String jwtToken = jwtService.generateToken(user.getLogin());
 
         return ResponseEntity.ok(new JwtResponse(jwtToken));
-    }
-
-    private LoginFormDto mapRegisterFormToLoginForm(RegisterFormDto registerFormDto) {
-        LoginFormDto loginFormDto = new LoginFormDto();
-        loginFormDto.setEmail(registerFormDto.getEmail());
-        loginFormDto.setPassword(registerFormDto.getPassword());
-        return loginFormDto;
     }
 }

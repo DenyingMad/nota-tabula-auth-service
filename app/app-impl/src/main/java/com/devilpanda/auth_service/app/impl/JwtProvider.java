@@ -33,13 +33,11 @@ public class JwtProvider implements JwtService {
     }
 
     @Override
-    public String generateToken(Authentication login) {
-        UserPrincipal userPrincipal = (UserPrincipal) login.getPrincipal();
+    public String generateToken(String login) {
         return Jwts.builder()
-                .setSubject(userPrincipal.getUsername())
+                .setSubject(login)
                 .setIssuedAt(Date.from(Instant.now()))
                 .setExpiration(Date.from(Instant.now().plus(15, DAYS)))
-                .claim("currentUser", toJsonString(userPrincipal))
                 .signWith(SignatureAlgorithm.HS512, JWT_SIGN_SECRET)
                 .compact();
     }

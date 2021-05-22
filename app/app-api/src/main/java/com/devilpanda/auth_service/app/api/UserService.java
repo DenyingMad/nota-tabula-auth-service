@@ -15,13 +15,12 @@ public interface UserService {
     User findUserByLogin(String login);
 
     /**
-     * Находит пользователя по логину и хэшированному паролю
+     * Поиск пользователя по email
      *
-     * @param login    - логин пользователя
-     * @param password - пароль пользователя
+     * @param email - почтовый адрес пользователя
      * @return - найденный пользователь
      */
-    User findUserByLoginAndPassword(String login, String password);
+    User authorizeUser(String email, String password);
 
     /**
      * Сохранение пользователя

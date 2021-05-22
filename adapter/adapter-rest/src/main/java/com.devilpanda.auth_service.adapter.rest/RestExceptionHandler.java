@@ -3,6 +3,7 @@ package com.devilpanda.auth_service.adapter.rest;
 import com.devilpanda.auth_service.app.api.IncorrectEmailException;
 import com.devilpanda.auth_service.app.api.UserAlreadyExistException;
 import com.devilpanda.auth_service.app.api.UserNotFoundException;
+import com.devilpanda.auth_service.app.api.WrongCredentialsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -33,5 +34,12 @@ public class RestExceptionHandler {
         LOGGER.error(e.getMessage());
         LOGGER.trace(e.getMessage(), e);
         return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(WrongCredentialsException.class)
+    public ResponseEntity<Object> handleWrongCredentialsException(WrongCredentialsException e) {
+        LOGGER.error(e.getMessage());
+        LOGGER.trace(e.getMessage(), e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
     }
 }

@@ -1,29 +1,37 @@
 package com.devilpanda.auth_service.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 
-@AllArgsConstructor
 public class UserPrincipal implements UserDetails {
     private final String login;
 
     @JsonIgnore
     private final String password;
 
+    private final Collection<GrantedAuthority> authorities = new HashSet<>();
+
+    public UserPrincipal(String login, String password) {
+        this.login = login;
+        this.password = password;
+        authorities.add(new SimpleGrantedAuthority("USER"));
+    }
+
     public static UserPrincipal build(User user) {
         return new UserPrincipal(
-                user.getEmail(),
+                user.getLogin(),
                 user.getPassword()
         );
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
