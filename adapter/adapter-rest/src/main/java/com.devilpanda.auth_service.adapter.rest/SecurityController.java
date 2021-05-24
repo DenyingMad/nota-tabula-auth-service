@@ -38,4 +38,10 @@ public class SecurityController {
 
         return ResponseEntity.ok(new JwtResponse(jwtToken));
     }
+
+    @PostMapping("/user/change-password")
+    public ResponseEntity<Object> changePassword(@RequestBody String password) {
+        userService.changePassword(password);
+        return ResponseEntity.ok("Password successfully changed");
+    }
 }

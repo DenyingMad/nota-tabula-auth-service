@@ -43,6 +43,12 @@ public class UserServiceAdapter implements UserService {
         userFeignClient.createUser(user);
     }
 
+    @Override
+    public void changePassword(String password) {
+        String hashedPassword = passwordEncoder.encode(password);
+        userFeignClient.changePassword(hashedPassword);
+    }
+
     // ----------------------------------------------
     // = Implementation
     // ----------------------------------------------

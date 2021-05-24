@@ -5,7 +5,6 @@ import com.devilpanda.auth_service.domain.User;
 import java.util.Optional;
 
 public interface UserService {
-
     /**
      * Находит пользователя по логину
      *
@@ -28,4 +27,11 @@ public interface UserService {
      * @param user - пользователь, которого нужно сохранить
      */
     void saveUser(User user);
+
+    /**
+     * Генерируется новый хешированный пароль и отправляется в user-service
+     *
+     * @param password - пароль пользователя
+     */
+    void changePassword(String password);
 }
