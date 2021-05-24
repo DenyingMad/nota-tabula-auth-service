@@ -44,9 +44,9 @@ public class UserServiceAdapter implements UserService {
     }
 
     @Override
-    public void changePassword(String password) {
+    public void changePassword(String userLogin, String password) {
         String hashedPassword = passwordEncoder.encode(password);
-        userFeignClient.changePassword(hashedPassword);
+        userFeignClient.changePassword(userLogin, hashedPassword);
     }
 
     // ----------------------------------------------

@@ -40,8 +40,8 @@ public class SecurityController {
     }
 
     @PutMapping("/user/change-password")
-    public ResponseEntity<Object> changePassword(@RequestBody String password) {
-        userService.changePassword(password);
+    public ResponseEntity<Object> changePassword(@RequestHeader String userLogin, @RequestBody String password) {
+        userService.changePassword(userLogin, password);
         return ResponseEntity.ok("Password successfully changed");
     }
 }

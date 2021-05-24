@@ -33,5 +33,5 @@ public interface UserService {
      *
      * @param password - пароль пользователя
      */
-    void changePassword(String password);
+    void changePassword(String login, String password);
 }

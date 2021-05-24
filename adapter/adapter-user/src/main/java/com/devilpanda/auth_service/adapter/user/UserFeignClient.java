@@ -10,7 +10,7 @@ public interface UserFeignClient {
     void createUser(@RequestBody User user);
 
     @PutMapping("/rest/api/user/change-password")
-    void changePassword(@RequestBody String password);
+    void changePassword(@RequestHeader String userLogin, @RequestBody String password);
 
     @GetMapping("/rest/api/user/login")
     User findUserByLogin(@RequestParam String login);
